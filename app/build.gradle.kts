@@ -1,6 +1,9 @@
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.androidGradlePlugin)
+    alias(libs.plugins.kotlinAndroidPlugin)
+    kotlin("kapt")
+    alias(libs.plugins.hiltPlugin)
 }
 
 android {
@@ -47,13 +50,40 @@ android {
 }
 
 dependencies {
+    implementation(libs.core)
+    implementation(libs.appcompat)
+    implementation(libs.lifecycle)
+    implementation(libs.viewModel)
+    implementation(libs.constraintLayout)
+    implementation(libs.activityKtx)
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation(libs.coroutines)
+    implementation(libs.coroutinesAndroid)
 
-    testImplementation("junit:junit:4.13.2")
+    implementation(libs.roomRuntime)
+    implementation(libs.roomKotlin)
+    annotationProcessor(libs.roomCompiler)
+    kapt(libs.roomCompiler)
 
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(libs.retrofit)
+    implementation(libs.retrofitMoshiConverter)
+    implementation(libs.okhttp)
+    implementation(libs.okhttpLogInterceptor)
+    implementation(libs.moshi)
+    implementation(libs.moshiKotlinCodegen)
+
+    implementation(libs.hilt)
+    implementation(libs.hiltAndroid)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.mockitoInline)
+    testImplementation(libs.mockitoKotlin)
+    testImplementation(libs.coroutinesTest)
+
+    androidTestImplementation(libs.andoridJunitTest)
+    androidTestImplementation(libs.espresso)
+}
+
+kapt {
+    correctErrorTypes = true
 }
