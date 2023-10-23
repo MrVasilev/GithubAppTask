@@ -23,6 +23,11 @@ android {
         }
     }
 
+    buildFeatures {
+        dataBinding = true
+        buildConfig = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -31,6 +36,10 @@ android {
                 "proguard-rules.pro"
             )
         }
+    }
+
+    testOptions {
+        unitTests.isReturnDefaultValues = true
     }
 
     compileOptions {
@@ -60,6 +69,8 @@ dependencies {
     implementation(libs.coroutines)
     implementation(libs.coroutinesAndroid)
 
+    implementation(libs.securityCrypto)
+
     implementation(libs.roomRuntime)
     implementation(libs.roomKotlin)
     annotationProcessor(libs.roomCompiler)
@@ -70,15 +81,16 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.okhttpLogInterceptor)
     implementation(libs.moshi)
-    implementation(libs.moshiKotlinCodegen)
+    kapt(libs.moshiKotlinCodegen)
 
     implementation(libs.hilt)
-    implementation(libs.hiltAndroid)
+    kapt(libs.hiltAndroidCompiler)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockitoInline)
     testImplementation(libs.mockitoKotlin)
     testImplementation(libs.coroutinesTest)
+    testImplementation(libs.turbine)
 
     androidTestImplementation(libs.andoridJunitTest)
     androidTestImplementation(libs.espresso)
