@@ -2,4 +2,6 @@
     <string name="app_name">Github App Task</string>
     <string name="personal_access_token_hint">Personal Access Token</string>
     <string name="login_button_text">Login</string>
+    <string name="followers_temp_text">Followers: %s</string>
+    <string name="followings_temp_text">Followings: %s</string>
 </resources>

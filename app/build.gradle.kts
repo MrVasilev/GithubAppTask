@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.viewModel)
     implementation(libs.constraintLayout)
     implementation(libs.activityKtx)
+    implementation(libs.fragmentKtx)
 
     implementation(libs.coroutines)
     implementation(libs.coroutinesAndroid)
@@ -73,6 +74,8 @@ dependencies {
 
     implementation(libs.roomRuntime)
     implementation(libs.roomKotlin)
+    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.material)
     annotationProcessor(libs.roomCompiler)
     kapt(libs.roomCompiler)
 
@@ -85,6 +88,8 @@ dependencies {
 
     implementation(libs.hilt)
     kapt(libs.hiltAndroidCompiler)
+
+    implementation(libs.coil)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockitoInline)
