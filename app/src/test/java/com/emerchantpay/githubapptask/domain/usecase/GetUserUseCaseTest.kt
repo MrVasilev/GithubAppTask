@@ -1,7 +1,7 @@
 package com.emerchantpay.githubapptask.domain.usecase
 
 import app.cash.turbine.test
-import com.emerchantpay.githubapptask.common.Resource
+import com.emerchantpay.githubapptask.data.common.Resource
 import com.emerchantpay.githubapptask.data.repository.UserRepository
 import com.emerchantpay.githubapptask.generateUser
 import kotlinx.coroutines.flow.flowOf
@@ -31,7 +31,7 @@ class GetUserUseCaseTest {
     @Test
     fun `invoke() loading should return loading response`() = runTest {
         // given
-        whenever(userRepository.getUser()).thenReturn(flowOf(Resource.Loading()))
+        whenever(userRepository.getUser()).thenReturn(flowOf(Resource.Loading))
 
         // when
         tested.invoke().test {

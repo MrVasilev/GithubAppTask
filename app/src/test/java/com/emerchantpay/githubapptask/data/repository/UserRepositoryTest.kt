@@ -1,7 +1,7 @@
 package com.emerchantpay.githubapptask.data.repository
 
 import app.cash.turbine.test
-import com.emerchantpay.githubapptask.common.Resource
+import com.emerchantpay.githubapptask.data.common.Resource
 import com.emerchantpay.githubapptask.data.mapper.UserMapper
 import com.emerchantpay.githubapptask.data.network.GitHubApi
 import com.emerchantpay.githubapptask.generateUser

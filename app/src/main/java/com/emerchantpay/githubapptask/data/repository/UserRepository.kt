@@ -1,7 +1,7 @@
 package com.emerchantpay.githubapptask.data.repository
 
 import com.emerchantpay.githubapptask.common.Constants.UNKNOWN_ERROR_MESSAGE
-import com.emerchantpay.githubapptask.common.Resource
+import com.emerchantpay.githubapptask.data.common.Resource
 import com.emerchantpay.githubapptask.data.mapper.UserMapper
 import com.emerchantpay.githubapptask.data.network.GitHubApi
 import com.emerchantpay.githubapptask.domain.model.User
@@ -18,7 +18,7 @@ class UserRepository @Inject constructor(
 ) {
 
     suspend fun getUser(): Flow<Resource<User>> = flow {
-        emit(Resource.Loading())
+        emit(Resource.Loading)
         val user = gitHubApi.getUser()
             .let { userMapper.mapToDomainModel(it) }
         emit(Resource.Success(user))

@@ -1,13 +1,12 @@
-package com.emerchantpay.githubapptask.ui
+package com.emerchantpay.githubapptask.ui.login
 
 import com.emerchantpay.githubapptask.common.Constants.UNKNOWN_ERROR_MESSAGE
-import com.emerchantpay.githubapptask.common.Resource
+import com.emerchantpay.githubapptask.data.common.Resource
 import com.emerchantpay.githubapptask.data.security.TokenProvider
-import com.emerchantpay.githubapptask.domain.model.User
 import com.emerchantpay.githubapptask.domain.usecase.GetUserUseCase
 import com.emerchantpay.githubapptask.generateUser
-import com.emerchantpay.githubapptask.ui.mapper.UserUiStateMapper
-import com.emerchantpay.githubapptask.ui.model.UserUiState
+import com.emerchantpay.githubapptask.ui.common.UIState
+import com.emerchantpay.githubapptask.ui.profile.mapper.UserUiStateMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -37,6 +36,7 @@ class LoginViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
+
         tested = LoginViewModel(getUserUseCase, tokenProvider, userUiStateMapper)
     }
 
@@ -46,7 +46,7 @@ class LoginViewModelTest {
             // given
             val user = generateUser()
             val response = Resource.Success(user)
-            val uiState = UserUiState.Success(user)
+            val uiState = UIState.Success(user)
 
             whenever(getUserUseCase.invoke()).thenReturn(flowOf(response))
             whenever(userUiStateMapper.mapToUiState(response)).thenReturn(uiState)
@@ -67,8 +67,8 @@ class LoginViewModelTest {
     fun `onLoginButtonClicked() with wrong access token should show error ui state`() =
         runTest {
             // given
-            val response = Resource.Error<User>(UNKNOWN_ERROR_MESSAGE)
-            val uiState = UserUiState.Error(UNKNOWN_ERROR_MESSAGE)
+            val response = Resource.Error(UNKNOWN_ERROR_MESSAGE)
+            val uiState = UIState.Error(UNKNOWN_ERROR_MESSAGE)
 
             whenever(getUserUseCase.invoke()).thenReturn(flowOf(response))
             whenever(userUiStateMapper.mapToUiState(response)).thenReturn(uiState)
@@ -89,8 +89,8 @@ class LoginViewModelTest {
     fun `onLoginButtonClicked() while loading should show loading ui state`() =
         runTest {
             // given
-            val response = Resource.Loading<User>()
-            val uiState = UserUiState.Loading
+            val response = Resource.Loading
+            val uiState = UIState.Loading
 
             whenever(getUserUseCase.invoke()).thenReturn(flowOf(response))
             whenever(userUiStateMapper.mapToUiState(response)).thenReturn(uiState)

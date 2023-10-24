@@ -4,6 +4,7 @@ appcompat_version = "1.6.1"
 lifecycle_version = "2.6.1"
 constraintlayout_version = "2.1.4"
 activity_ktx_version = "1.7.2"
+fragment_ktx_version = "1.6.1"
 coroutines_version = "1.7.3"
 security_crypto_version = "1.0.0"
 
@@ -14,6 +15,8 @@ okhttp_version = "4.10.0"
 moshi_version = "1.15.0"
 hilt_version = "2.48"
 
+coil_version = "2.4.0"
+
 junit_version = "4.13.2"
 mockito_version = "5.2.0"
 mockito_kotlin_version = "5.1.0"
@@ -23,6 +26,8 @@ espresso_version = "3.5.1"
 
 android_gradle_plugin_version = "8.1.0"
 kotlin_android_plugin_version = "1.9.10"
+lifecycle-livedata-ktx = "2.6.2"
+material = "1.4.0"
 
 [libraries]
 core                    = { module = "androidx.core:core-ktx", version.ref = "core_version" }
@@ -31,6 +36,7 @@ lifecycle               = { module = "androidx.lifecycle:lifecycle-runtime-ktx",
 viewModel               = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle_version" }
 constraintLayout        = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout_version" }
 activityKtx             = { module = "androidx.activity:activity-ktx", version.ref = "activity_ktx_version" }
+fragmentKtx             = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment_ktx_version" }
 coroutines              = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines_version" }
 coroutinesAndroid       = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines_version" }
 securityCrypto          = { module = "androidx.security:security-crypto", version.ref = "security_crypto_version" }
@@ -49,6 +55,8 @@ moshiKotlinCodegen      = { module = "com.squareup.moshi:moshi-kotlin-codegen", 
 hilt                    = { module = "com.google.dagger:hilt-android", version.ref = "hilt_version" }
 hiltAndroidCompiler     = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt_version" }
 
+coil                    = { module = "io.coil-kt:coil", version.ref = "coil_version" }
+
 junit                   = { module = "junit:junit", version.ref = "junit_version" }
 mockitoInline           = { module = "org.mockito:mockito-inline", version.ref = "mockito_version" }
 mockitoKotlin           = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito_kotlin_version" }
@@ -56,6 +64,8 @@ coroutinesTest          = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 turbine                 = { module = "app.cash.turbine:turbine", version.ref = "turbine_version" }
 andoridJunitTest        = { module = "androidx.test.ext:junit", version.ref = "android_junit_test_version" }
 espresso                = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso_version" }
+lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle-livedata-ktx" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 androidGradlePlugin     = { id = "com.android.application", version.ref = "android_gradle_plugin_version" }
