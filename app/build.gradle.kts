@@ -21,6 +21,15 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true"
+                )
+            }
+        }
     }
 
     buildFeatures {
@@ -72,10 +81,11 @@ dependencies {
 
     implementation(libs.securityCrypto)
 
-    implementation(libs.roomRuntime)
-    implementation(libs.roomKotlin)
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.material)
+
+    implementation(libs.room)
+    implementation(libs.roomKtx)
     annotationProcessor(libs.roomCompiler)
     kapt(libs.roomCompiler)
 

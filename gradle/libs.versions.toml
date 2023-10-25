@@ -41,9 +41,9 @@ coroutines              = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 coroutinesAndroid       = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines_version" }
 securityCrypto          = { module = "androidx.security:security-crypto", version.ref = "security_crypto_version" }
 
-roomRuntime             = { module = "androidx.room:room-runtime", version.ref = "room_version" }
+room                    = { module = "androidx.room:room-runtime", version.ref = "room_version" }
 roomCompiler            = { module = "androidx.room:room-compiler", version.ref = "room_version" }
-roomKotlin              = { module = "androidx.room:room-ktx", version.ref = "room_version" }
+roomKtx                 = { module = "androidx.room:room-ktx", version.ref = "room_version" }
 
 retrofit                = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit_version" }
 retrofitMoshiConverter  = { module = "com.squareup.retrofit2:converter-moshi", version.ref = "retrofit_version" }
