@@ -36,8 +36,8 @@ class UserDaoTest {
         val expected = generateUserDb()
 
         // when
-        tested.insert(expected)
-        val actual = tested.getUser(expected.id)
+        tested.insertUsers(expected)
+        val actual = tested.getUserById(expected.id)
 
         // then
         assertEquals(expected, actual)
@@ -49,7 +49,7 @@ class UserDaoTest {
         val expected = generateUserDb(isOwner = true)
 
         // when
-        tested.insert(expected)
+        tested.insertUsers(expected)
         val actual = tested.getOwnerUser()
 
         // then
@@ -62,7 +62,7 @@ class UserDaoTest {
         val user = generateUserDb(isOwner = false)
 
         // when
-        tested.insert(user)
+        tested.insertUsers(user)
         val actual = tested.getOwnerUser()
 
         // then
@@ -72,7 +72,7 @@ class UserDaoTest {
     @Test
     fun getUserNotInDbShouldReturnNull() {
         // when
-        val actual = tested.getUser(12)
+        val actual = tested.getUserById(12)
 
         // then
         assertNull(actual)

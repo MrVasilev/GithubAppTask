@@ -35,7 +35,7 @@ class UserRepository @Inject constructor(
         gitHubApi.getUser()
             .run {
                 val userDb = mapToDbModel()
-                userDao.insert(userDb)
+                userDao.insertUsers(listOf(userDb))
                 userDb.mapToDomainModel()
             }
 }

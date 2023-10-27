@@ -10,11 +10,11 @@ import com.emerchantpay.githubapptask.data.db.model.UserEntity
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(user: UserEntity)
+    fun insertUsers(users: List<UserEntity>)
 
     @Query("SELECT * FROM users WHERE is_owner = 1 LIMIT 1")
     fun getOwnerUser(): UserEntity?
 
     @Query("SELECT * FROM users WHERE _id = :id LIMIT 1")
-    fun getUser(id: Long): UserEntity
+    fun getUserById(id: Long): UserEntity?
 }

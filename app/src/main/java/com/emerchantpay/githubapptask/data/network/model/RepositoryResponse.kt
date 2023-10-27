@@ -1,6 +1,5 @@
-package com.emerchantpay.githubapptask.data.model
+package com.emerchantpay.githubapptask.data.network.model
 
-import com.emerchantpay.githubapptask.domain.model.User
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -16,8 +15,8 @@ data class RepositoryResponse(
     val url: String? = null,
 
     @Json(name = "owner")
-    val owner: User,
+    val owner: UserResponse,
 
     @Json(name = "contributors_url")
-    val contributors: List<User>? = null
+    val contributors: List<UserResponse>? = null
 )

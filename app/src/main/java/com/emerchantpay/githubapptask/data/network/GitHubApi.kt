@@ -1,6 +1,6 @@
 package com.emerchantpay.githubapptask.data.network
 
-import com.emerchantpay.githubapptask.data.model.RepositoryResponse
+import com.emerchantpay.githubapptask.data.network.model.RepositoryResponse
 import com.emerchantpay.githubapptask.data.network.model.UserResponse
 import retrofit2.http.GET
 

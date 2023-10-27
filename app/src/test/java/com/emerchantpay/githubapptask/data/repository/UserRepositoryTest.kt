@@ -49,7 +49,7 @@ class UserRepositoryTest {
         inOrder(gitHubApi, userDao) {
             verify(userDao).getOwnerUser()
             verify(gitHubApi).getUser()
-            verify(userDao).insert(userDb)
+            verify(userDao).insertUsers(userDb)
             verifyNoMoreInteractions()
         }
     }
