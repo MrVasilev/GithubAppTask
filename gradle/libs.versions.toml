@@ -7,6 +7,7 @@ activity_ktx_version = "1.7.2"
 fragment_ktx_version = "1.6.1"
 coroutines_version = "1.7.3"
 security_crypto_version = "1.0.0"
+material_version = "1.4.0"
 
 room_version = "2.5.2"
 
@@ -26,20 +27,20 @@ espresso_version = "3.5.1"
 
 android_gradle_plugin_version = "8.1.0"
 kotlin_android_plugin_version = "1.9.10"
-lifecycle-livedata-ktx = "2.6.2"
-material = "1.4.0"
 
 [libraries]
 core                    = { module = "androidx.core:core-ktx", version.ref = "core_version" }
 appcompat               = { module = "androidx.appcompat:appcompat", version.ref = "appcompat_version" }
 lifecycle               = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycle_version" }
 viewModel               = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle_version" }
+lifecycleLivedataKtx    = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle_version" }
 constraintLayout        = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout_version" }
 activityKtx             = { module = "androidx.activity:activity-ktx", version.ref = "activity_ktx_version" }
 fragmentKtx             = { module = "androidx.fragment:fragment-ktx", version.ref = "fragment_ktx_version" }
 coroutines              = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines_version" }
 coroutinesAndroid       = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines_version" }
 securityCrypto          = { module = "androidx.security:security-crypto", version.ref = "security_crypto_version" }
+material                = { module = "com.google.android.material:material", version.ref = "material_version" }
 
 room                    = { module = "androidx.room:room-runtime", version.ref = "room_version" }
 roomCompiler            = { module = "androidx.room:room-compiler", version.ref = "room_version" }
@@ -64,8 +65,7 @@ coroutinesTest          = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-t
 turbine                 = { module = "app.cash.turbine:turbine", version.ref = "turbine_version" }
 andoridJunitTest        = { module = "androidx.test.ext:junit", version.ref = "android_junit_test_version" }
 espresso                = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso_version" }
-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle-livedata-ktx" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+roomTest                = { module = "androidx.room:room-testing", version.ref = "room_version" }
 
 [plugins]
 androidGradlePlugin     = { id = "com.android.application", version.ref = "android_gradle_plugin_version" }

@@ -81,7 +81,7 @@ dependencies {
 
     implementation(libs.securityCrypto)
 
-    implementation(libs.lifecycle.livedata.ktx)
+    implementation(libs.lifecycleLivedataKtx)
     implementation(libs.material)
 
     implementation(libs.room)
@@ -106,6 +106,7 @@ dependencies {
     testImplementation(libs.mockitoKotlin)
     testImplementation(libs.coroutinesTest)
     testImplementation(libs.turbine)
+    testImplementation(libs.roomTest)
 
     androidTestImplementation(libs.andoridJunitTest)
     androidTestImplementation(libs.espresso)
