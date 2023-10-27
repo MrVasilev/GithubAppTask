@@ -1,4 +1,4 @@
-package com.emerchantpay.githubapptask.data.model
+package com.emerchantpay.githubapptask.data.network.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class UserResponse(
     @Json(name = "id")
-    val id: Int,
+    val id: Long,
 
     @Json(name = "login")
     val login: String? = null,

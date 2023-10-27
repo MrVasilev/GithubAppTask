@@ -2,9 +2,9 @@ package com.emerchantpay.githubapptask.data.repository
 
 import app.cash.turbine.test
 import com.emerchantpay.githubapptask.data.common.Resource
-import com.emerchantpay.githubapptask.data.mapper.UserMapper
+import com.emerchantpay.githubapptask.data.db.dao.UserDao
 import com.emerchantpay.githubapptask.data.network.GitHubApi
-import com.emerchantpay.githubapptask.generateUser
+import com.emerchantpay.githubapptask.generateUserDb
 import com.emerchantpay.githubapptask.generateUserResponse
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertTrue
@@ -14,31 +14,30 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.inOrder
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.only
-import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @RunWith(MockitoJUnitRunner::class)
 class UserRepositoryTest {
 
     private val gitHubApi = mock<GitHubApi>()
-    private val userMapper = mock<UserMapper>()
+    private val userDao = mock<UserDao>()
 
     private lateinit var tested: UserRepository
 
     @Before
     fun setUp() {
-        tested = UserRepository(gitHubApi, userMapper)
+        tested = UserRepository(gitHubApi, userDao)
     }
 
     @Test
-    fun `getUser() success should emit loading, success and return response`() = runTest {
+    fun `getUser() with empty db and success network call should return success`() = runTest {
         // given
         val response = generateUserResponse()
-        val user = generateUser()
+        val userDb = generateUserDb()
+
 
         whenever(gitHubApi.getUser()).thenReturn(response)
-        whenever(userMapper.mapToDomainModel(response)).thenReturn(user)
+        whenever(userDao.getOwnerUser()).thenReturn(null)
 
         // when
         tested.getUser().test {
@@ -47,16 +46,38 @@ class UserRepositoryTest {
             awaitComplete()
         }
 
-        inOrder(gitHubApi, userMapper) {
+        inOrder(gitHubApi, userDao) {
+            verify(userDao).getOwnerUser()
             verify(gitHubApi).getUser()
-            verify(userMapper).mapToDomainModel(response)
+            verify(userDao).insert(userDb)
             verifyNoMoreInteractions()
         }
     }
 
     @Test
-    fun `getUser() error should emit loading, error and return exception`() = runTest {
+    fun `getUser() with user in db should return success and not make network call`() = runTest {
         // given
+        val userDb = generateUserDb()
+
+        whenever(userDao.getOwnerUser()).thenReturn(userDb)
+
+        // when
+        tested.getUser().test {
+            assertTrue(awaitItem() is Resource.Loading)
+            assertTrue(awaitItem() is Resource.Success)
+            awaitComplete()
+        }
+
+        inOrder(userDao) {
+            verify(userDao).getOwnerUser()
+            verifyNoMoreInteractions()
+        }
+    }
+
+    @Test
+    fun `getUser() with empty db and network exception should return error`() = runTest {
+        // given
+        whenever(userDao.getOwnerUser()).thenReturn(null)
         whenever(gitHubApi.getUser()).thenAnswer { throw Exception() }
 
         // when
@@ -66,6 +87,28 @@ class UserRepositoryTest {
             awaitComplete()
         }
 
-        verify(gitHubApi, only()).getUser()
+        inOrder(gitHubApi, userDao) {
+            verify(userDao).getOwnerUser()
+            verify(gitHubApi).getUser()
+            verifyNoMoreInteractions()
+        }
+    }
+
+    @Test
+    fun `getUser() with user in db and db exception should return error`() = runTest {
+        // given
+        whenever(userDao.getOwnerUser()).thenAnswer { throw Exception() }
+
+        // when
+        tested.getUser().test {
+            assertTrue(awaitItem() is Resource.Loading)
+            assertTrue(awaitItem() is Resource.Error)
+            awaitComplete()
+        }
+
+        inOrder(gitHubApi, userDao) {
+            verify(userDao).getOwnerUser()
+            verifyNoMoreInteractions()
+        }
     }
 }
