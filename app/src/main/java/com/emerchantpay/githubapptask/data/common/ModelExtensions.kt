@@ -16,8 +16,7 @@ fun UserResponse.mapToDbModel(isOwner: Boolean = false): UserEntity = UserEntity
     avatarUrl = avatarUrl.orEmpty(),
     followers = followers ?: 0,
     following = following ?: 0,
-    isOwner = isOwner,
-    repositories = emptyList()
+    isOwner = isOwner
 )
 
 fun UserEntity.mapToDomainModel(): User = User(
@@ -29,18 +28,19 @@ fun UserEntity.mapToDomainModel(): User = User(
     following = following
 )
 
-fun RepositoryResponse.mapToDbModel(): RepositoryEntity = RepositoryEntity(
-    id = id,
-    name = name.orEmpty(),
-    url = url.orEmpty(),
-    owner = owner.mapToDbModel(),
-    contributors = contributors?.map { it.mapToDbModel() }.orEmpty()
-)
+fun RepositoryResponse.mapToDbModel(isStarred: Boolean = false): RepositoryEntity =
+    RepositoryEntity(
+        id = id,
+        name = name.orEmpty(),
+        url = url.orEmpty(),
+        ownerId = owner.id,
+        isStarred = isStarred
+    )
 
 fun RepositoryEntity.mapToDomainModel(): Repository = Repository(
     id = id,
-    name = name.orEmpty(),
-    url = url.orEmpty(),
-    owner = owner.mapToDomainModel(),
-    contributors = contributors.map { it.mapToDomainModel() }.orEmpty()
+    name = name,
+    url = url,
+    ownerId = ownerId,
+    isStarred = isStarred
 )

@@ -4,6 +4,6 @@ data class Repository(
     val id: Long,
     val name: String,
     val url: String,
-    val owner: User,
-    val contributors: List<User>
+    val ownerId: Long,
+    val isStarred: Boolean,
 )

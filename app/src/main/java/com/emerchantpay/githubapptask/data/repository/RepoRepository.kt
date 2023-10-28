@@ -5,69 +5,69 @@ import com.emerchantpay.githubapptask.data.common.Resource
 import com.emerchantpay.githubapptask.data.common.mapToDbModel
 import com.emerchantpay.githubapptask.data.common.mapToDomainModel
 import com.emerchantpay.githubapptask.data.db.dao.RepositoryDao
-import com.emerchantpay.githubapptask.data.db.model.RepositoryEntity
 import com.emerchantpay.githubapptask.data.network.GitHubApi
-import com.emerchantpay.githubapptask.data.network.model.RepositoryResponse
+import com.emerchantpay.githubapptask.data.network.utils.fetchRemoteDataAndInsertInDb
 import com.emerchantpay.githubapptask.domain.model.Repository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class RepoRepository @Inject constructor(
     private val gitHubApi: GitHubApi,
-    private val repositoryDao: RepositoryDao
+    private val repositoryDao: RepositoryDao,
 ) {
 
-    suspend fun getUserRepos(): Flow<Resource<List<Repository>>> = flow {
+    suspend fun getUserOwnedRepos(): Flow<Resource<List<Repository>>> = flow {
         emit(Resource.Loading)
 
-        val repos = repositoryDao.getAllRepositories()?.map { it.mapToDomainModel() }
-            ?: fetchUserRepositoriesDataRemote()
+        val repos = repositoryDao.getAllOwnedRepositories().run {
+            if (isNullOrEmpty()) {
+                fetchUserRepositoriesDataRemote()
+            } else {
+                map { it.mapToDomainModel() }
+            }
+        }
 
         emit(Resource.Success(repos))
     }.catch { error ->
         emit(Resource.Error(error.message ?: Constants.UNKNOWN_ERROR_MESSAGE))
-    }
+    }.flowOn(Dispatchers.IO)
 
     suspend fun getUserStarredRepos(): Flow<Resource<List<Repository>>> = flow {
         emit(Resource.Loading)
 
-        val repos = repositoryDao.getAllRepositories()?.map { it.mapToDomainModel() }
-            ?: fetchUserStarredRepositoriesDataRemote()
+        val repos = repositoryDao.getAllStarredRepositories().run {
+            if (isNullOrEmpty()) {
+                fetchUserStarredRepositoriesDataRemote()
+            } else {
+                map { it.mapToDomainModel() }
+            }
+        }
 
         emit(Resource.Success(repos))
     }.catch { error ->
         emit(Resource.Error(error.message ?: Constants.UNKNOWN_ERROR_MESSAGE))
-    }
+    }.flowOn(Dispatchers.IO)
 
     private suspend fun fetchUserRepositoriesDataRemote(): List<Repository> =
-        fetchAndInsertRepositories(
-            fetchRemoteRepos = { gitHubApi.getUserRepos() },
+        fetchRemoteDataAndInsertInDb(
+            fetchRemoteData = { gitHubApi.getUserRepos() },
             mapToDbModel = { it.mapToDbModel() },
-            insertRepos = { repositoryDao.insertRepos(it) },
+            insertDbData = { repositoryDao.insertRepos(it) },
             mapToDomainModel = { it.mapToDomainModel() }
         )
 
     private suspend fun fetchUserStarredRepositoriesDataRemote(): List<Repository> =
-        fetchAndInsertRepositories(
-            fetchRemoteRepos = { gitHubApi.getUserStarredRepos() },
-            mapToDbModel = { it.mapToDbModel() },
-            insertRepos = { repositoryDao.insertRepos(it) },
+        fetchRemoteDataAndInsertInDb(
+            fetchRemoteData = { gitHubApi.getUserStarredRepos() },
+            mapToDbModel = { it.mapToDbModel(isStarred = true) },
+            insertDbData = { repositoryDao.insertRepos(it) },
             mapToDomainModel = { it.mapToDomainModel() }
         )
-
-    private suspend fun fetchAndInsertRepositories(
-        fetchRemoteRepos: suspend () -> List<RepositoryResponse>,
-        mapToDbModel: (RepositoryResponse) -> RepositoryEntity,
-        insertRepos: suspend (List<RepositoryEntity>) -> Unit,
-        mapToDomainModel: (RepositoryEntity) -> Repository
-    ): List<Repository> {
-        val reposDb = fetchRemoteRepos().map { mapToDbModel(it) }
-        insertRepos(reposDb)
-        return reposDb.map { mapToDomainModel(it) }
-    }
 
 }

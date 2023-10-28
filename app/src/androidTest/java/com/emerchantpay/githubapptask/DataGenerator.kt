@@ -1,5 +1,6 @@
 package com.emerchantpay.githubapptask
 
+import com.emerchantpay.githubapptask.data.db.model.RepositoryEntity
 import com.emerchantpay.githubapptask.data.db.model.UserEntity
 
 private const val ID = 123L
@@ -7,6 +8,8 @@ private const val LOGIN = "LOGIN"
 private const val NAME = "NAME"
 private const val AVATAR_URL = "AVATAR_URL"
 private const val FOLLOWERS = 10
+private const val REPO_ID = 456L
+private const val REPO_URL = "https://REPO_URL"
 
 fun generateUserDb(isOwner: Boolean = false): UserEntity = UserEntity(
     id = ID,
@@ -17,3 +20,12 @@ fun generateUserDb(isOwner: Boolean = false): UserEntity = UserEntity(
     following = FOLLOWERS,
     isOwner = isOwner
 )
+
+fun generateRepositoryDb(id: Long = REPO_ID, isStarred: Boolean = false): RepositoryEntity =
+    RepositoryEntity(
+        id = id,
+        name = NAME,
+        url = REPO_URL,
+        ownerId = ID,
+        isStarred = isStarred
+    )

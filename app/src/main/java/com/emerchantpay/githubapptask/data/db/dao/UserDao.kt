@@ -15,6 +15,7 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE is_owner = 1 LIMIT 1")
     fun getOwnerUser(): UserEntity?
 
-    @Query("SELECT * FROM users WHERE _id = :id LIMIT 1")
+    @Query("SELECT * FROM users WHERE user_id = :id LIMIT 1")
     fun getUserById(id: Long): UserEntity?
+
 }

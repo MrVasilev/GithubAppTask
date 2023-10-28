@@ -36,7 +36,7 @@ class UserDaoTest {
         val expected = generateUserDb()
 
         // when
-        tested.insertUsers(expected)
+        tested.insertUsers(listOf(expected))
         val actual = tested.getUserById(expected.id)
 
         // then
@@ -49,7 +49,7 @@ class UserDaoTest {
         val expected = generateUserDb(isOwner = true)
 
         // when
-        tested.insertUsers(expected)
+        tested.insertUsers(listOf(expected))
         val actual = tested.getOwnerUser()
 
         // then
@@ -62,7 +62,7 @@ class UserDaoTest {
         val user = generateUserDb(isOwner = false)
 
         // when
-        tested.insertUsers(user)
+        tested.insertUsers(listOf(user))
         val actual = tested.getOwnerUser()
 
         // then

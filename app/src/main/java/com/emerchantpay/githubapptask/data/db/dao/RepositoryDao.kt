@@ -15,6 +15,13 @@ interface RepositoryDao {
     @Query("SELECT * FROM repositories")
     fun getAllRepositories(): List<RepositoryEntity>?
 
-    @Query("SELECT * FROM repositories WHERE _id = :id LIMIT 1")
+    @Query("SELECT * FROM repositories WHERE is_starred = 0")
+    fun getAllOwnedRepositories(): List<RepositoryEntity>?
+
+    @Query("SELECT * FROM repositories WHERE is_starred = 1")
+    fun getAllStarredRepositories(): List<RepositoryEntity>?
+
+    @Query("SELECT * FROM repositories WHERE repo_id = :id LIMIT 1")
     fun getRepoById(id: Long): RepositoryEntity?
+
 }

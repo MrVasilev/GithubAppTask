@@ -6,7 +6,7 @@ import com.emerchantpay.githubapptask.data.security.TokenProvider
 import com.emerchantpay.githubapptask.domain.usecase.GetUserUseCase
 import com.emerchantpay.githubapptask.generateUser
 import com.emerchantpay.githubapptask.ui.common.UIState
-import com.emerchantpay.githubapptask.ui.profile.mapper.UserUiStateMapper
+import com.emerchantpay.githubapptask.ui.profile.mapper.UiStateMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -28,7 +28,7 @@ class LoginViewModelTest {
 
     private val getUserUseCase = mock<GetUserUseCase>()
     private val tokenProvider = mock<TokenProvider>()
-    private val userUiStateMapper = mock<UserUiStateMapper>()
+    private val uiStateMapper = mock<UiStateMapper>()
 
     private lateinit var tested: LoginViewModel
 
@@ -37,7 +37,7 @@ class LoginViewModelTest {
     fun setUp() {
         Dispatchers.setMain(UnconfinedTestDispatcher())
 
-        tested = LoginViewModel(getUserUseCase, tokenProvider, userUiStateMapper)
+        tested = LoginViewModel(getUserUseCase, tokenProvider, uiStateMapper)
     }
 
     @Test
@@ -49,16 +49,16 @@ class LoginViewModelTest {
             val uiState = UIState.Success(user)
 
             whenever(getUserUseCase.invoke()).thenReturn(flowOf(response))
-            whenever(userUiStateMapper.mapToUiState(response)).thenReturn(uiState)
+            whenever(uiStateMapper.mapToUiState(response)).thenReturn(uiState)
 
             // when
             tested.onLoginButtonClicked(ACCESS_TOKEN)
 
             // then
-            inOrder(getUserUseCase, userUiStateMapper, tokenProvider) {
+            inOrder(getUserUseCase, uiStateMapper, tokenProvider) {
                 verify(tokenProvider).setAccessToken(ACCESS_TOKEN)
                 verify(getUserUseCase).invoke()
-                verify(userUiStateMapper).mapToUiState(response)
+                verify(uiStateMapper).mapToUiState(response)
                 verifyNoMoreInteractions()
             }
         }
@@ -71,16 +71,16 @@ class LoginViewModelTest {
             val uiState = UIState.Error(UNKNOWN_ERROR_MESSAGE)
 
             whenever(getUserUseCase.invoke()).thenReturn(flowOf(response))
-            whenever(userUiStateMapper.mapToUiState(response)).thenReturn(uiState)
+            whenever(uiStateMapper.mapToUiState(response)).thenReturn(uiState)
 
             // when
             tested.onLoginButtonClicked(ACCESS_TOKEN)
 
             // then
-            inOrder(getUserUseCase, userUiStateMapper, tokenProvider) {
+            inOrder(getUserUseCase, uiStateMapper, tokenProvider) {
                 verify(tokenProvider).setAccessToken(ACCESS_TOKEN)
                 verify(getUserUseCase).invoke()
-                verify(userUiStateMapper).mapToUiState(response)
+                verify(uiStateMapper).mapToUiState(response)
                 verifyNoMoreInteractions()
             }
         }
@@ -93,16 +93,16 @@ class LoginViewModelTest {
             val uiState = UIState.Loading
 
             whenever(getUserUseCase.invoke()).thenReturn(flowOf(response))
-            whenever(userUiStateMapper.mapToUiState(response)).thenReturn(uiState)
+            whenever(uiStateMapper.mapToUiState(response)).thenReturn(uiState)
 
             // when
             tested.onLoginButtonClicked(ACCESS_TOKEN)
 
             // then
-            inOrder(getUserUseCase, userUiStateMapper, tokenProvider) {
+            inOrder(getUserUseCase, uiStateMapper, tokenProvider) {
                 verify(tokenProvider).setAccessToken(ACCESS_TOKEN)
                 verify(getUserUseCase).invoke()
-                verify(userUiStateMapper).mapToUiState(response)
+                verify(uiStateMapper).mapToUiState(response)
                 verifyNoMoreInteractions()
             }
         }

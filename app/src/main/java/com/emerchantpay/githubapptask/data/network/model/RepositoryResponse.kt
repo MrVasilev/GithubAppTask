@@ -16,7 +16,4 @@ data class RepositoryResponse(
 
     @Json(name = "owner")
     val owner: UserResponse,
-
-    @Json(name = "contributors_url")
-    val contributors: List<UserResponse>? = null
 )
