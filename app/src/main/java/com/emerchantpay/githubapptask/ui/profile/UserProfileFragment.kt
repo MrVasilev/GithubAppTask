@@ -10,12 +10,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.emerchantpay.githubapptask.R
 import com.emerchantpay.githubapptask.databinding.FragmentUserProfileBinding
 import com.emerchantpay.githubapptask.domain.model.Repository
 import com.emerchantpay.githubapptask.domain.model.User
 import com.emerchantpay.githubapptask.ui.common.UIState
+import com.emerchantpay.githubapptask.ui.profile.adapter.RepositoryItemAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -25,6 +27,8 @@ class UserProfileFragment : Fragment() {
     private lateinit var dataBinding: FragmentUserProfileBinding
 
     private val viewModel: UserProfileViewModel by viewModels()
+
+    private val repositoryItemsAdapter = RepositoryItemAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +41,11 @@ class UserProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        dataBinding.rvRepositories.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = repositoryItemsAdapter
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 handleUserUiState()
@@ -89,9 +98,8 @@ class UserProfileFragment : Fragment() {
         }
     }
 
-    private fun loadReposData(uiState: UIState.Success<List<Repository>>) {
-        val repos = uiState.data
-    }
+    private fun loadReposData(uiState: UIState.Success<List<Repository>>): Unit =
+        repositoryItemsAdapter.setRepositoryItems(uiState.data)
 
     private fun showLoading() {
         dataBinding.pbLoading.visibility = View.VISIBLE
