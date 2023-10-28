@@ -3,6 +3,7 @@ package com.emerchantpay.githubapptask.di
 import android.app.Application
 import androidx.room.Room
 import com.emerchantpay.githubapptask.data.db.AppDatabase
+import com.emerchantpay.githubapptask.data.db.dao.RepositoryDao
 import com.emerchantpay.githubapptask.data.db.dao.UserDao
 import dagger.Module
 import dagger.Provides
@@ -28,4 +29,8 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideUserDao(db: AppDatabase): UserDao = db.userDao()
+
+    @Provides
+    @Singleton
+    fun provideRepositoryDao(db: AppDatabase): RepositoryDao = db.repositoryDao()
 }

@@ -13,6 +13,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import coil.load
 import com.emerchantpay.githubapptask.R
 import com.emerchantpay.githubapptask.databinding.FragmentUserProfileBinding
+import com.emerchantpay.githubapptask.domain.model.Repository
 import com.emerchantpay.githubapptask.domain.model.User
 import com.emerchantpay.githubapptask.ui.common.UIState
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,7 +28,7 @@ class UserProfileFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         dataBinding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_user_profile, container, false)
@@ -39,6 +40,7 @@ class UserProfileFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 handleUserUiState()
+                handleReposUiState()
             }
         }
     }
@@ -50,6 +52,20 @@ class UserProfileFragment : Fragment() {
                 is UIState.Success -> {
                     hideLoading()
                     loadUserData(uiState)
+                }
+
+                is UIState.Error -> hideLoading()
+            }
+        }
+    }
+
+    private fun handleReposUiState() {
+        viewModel.reposUiState.observe(viewLifecycleOwner) { uiState ->
+            when (uiState) {
+                UIState.Loading -> showLoading()
+                is UIState.Success -> {
+                    hideLoading()
+                    loadReposData(uiState)
                 }
 
                 is UIState.Error -> hideLoading()
@@ -71,6 +87,10 @@ class UserProfileFragment : Fragment() {
                 user.following.toString()
             )
         }
+    }
+
+    private fun loadReposData(uiState: UIState.Success<List<Repository>>) {
+        val repos = uiState.data
     }
 
     private fun showLoading() {

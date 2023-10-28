@@ -2,15 +2,15 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "64a22445bb0eff939ff8781fe7b88456",
+    "identityHash": "848d2d63d0ec39798f40e94a0c5d0f3d",
     "entities": [
       {
         "tableName": "users",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`_id` INTEGER NOT NULL, `login` TEXT NOT NULL, `name` TEXT NOT NULL, `avatar_url` TEXT NOT NULL, `followers` INTEGER NOT NULL, `following` INTEGER NOT NULL, `is_owner` INTEGER NOT NULL, PRIMARY KEY(`_id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`user_id` INTEGER NOT NULL, `login` TEXT NOT NULL, `name` TEXT NOT NULL, `avatar_url` TEXT NOT NULL, `followers` INTEGER NOT NULL, `following` INTEGER NOT NULL, `is_owner` INTEGER NOT NULL, PRIMARY KEY(`user_id`))",
         "fields": [
           {
             "fieldPath": "id",
-            "columnName": "_id",
+            "columnName": "user_id",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -54,7 +54,51 @@
         "primaryKey": {
           "autoGenerate": false,
           "columnNames": [
-            "_id"
+            "user_id"
+          ]
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "repositories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`repo_id` INTEGER NOT NULL, `name` TEXT NOT NULL, `html_url` TEXT NOT NULL, `owner_id` INTEGER NOT NULL, `is_starred` INTEGER NOT NULL, PRIMARY KEY(`repo_id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "repo_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "html_url",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "ownerId",
+            "columnName": "owner_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "isStarred",
+            "columnName": "is_starred",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "repo_id"
           ]
         },
         "indices": [],
@@ -64,7 +108,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '64a22445bb0eff939ff8781fe7b88456')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '848d2d63d0ec39798f40e94a0c5d0f3d')"
     ]
   }
 }

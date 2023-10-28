@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "users")
 data class UserEntity(
     @PrimaryKey
-    @ColumnInfo(name = "_id")
+    @ColumnInfo(name = "user_id")
     val id: Long,
 
     @ColumnInfo(name = "login")
@@ -26,5 +26,5 @@ data class UserEntity(
     val following: Int,
 
     @ColumnInfo(name = "is_owner")
-    val isOwner: Boolean
+    val isOwner: Boolean = false,
 )

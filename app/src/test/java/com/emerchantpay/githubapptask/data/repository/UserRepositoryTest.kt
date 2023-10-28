@@ -12,6 +12,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.inOrder
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
@@ -33,11 +34,11 @@ class UserRepositoryTest {
     fun `getUser() with empty db and success network call should return success`() = runTest {
         // given
         val response = generateUserResponse()
-        val userDb = generateUserDb()
+        val userDb = generateUserDb(isOwner = true)
 
-
-        whenever(gitHubApi.getUser()).thenReturn(response)
         whenever(userDao.getOwnerUser()).thenReturn(null)
+        whenever(gitHubApi.getUser()).thenReturn(response)
+        doNothing().`when`(userDao).insertUsers(listOf(userDb))
 
         // when
         tested.getUser().test {
@@ -49,7 +50,7 @@ class UserRepositoryTest {
         inOrder(gitHubApi, userDao) {
             verify(userDao).getOwnerUser()
             verify(gitHubApi).getUser()
-            verify(userDao).insert(userDb)
+            verify(userDao).insertUsers(listOf(userDb))
             verifyNoMoreInteractions()
         }
     }
