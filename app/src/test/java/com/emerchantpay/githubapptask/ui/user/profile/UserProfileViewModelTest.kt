@@ -1,4 +1,4 @@
-package com.emerchantpay.githubapptask.ui.profile
+package com.emerchantpay.githubapptask.ui.user.profile
 
 import com.emerchantpay.githubapptask.common.Constants
 import com.emerchantpay.githubapptask.data.common.Resource
@@ -9,7 +9,7 @@ import com.emerchantpay.githubapptask.domain.usecase.GetUserUseCase
 import com.emerchantpay.githubapptask.generateRepository
 import com.emerchantpay.githubapptask.generateUser
 import com.emerchantpay.githubapptask.ui.common.UIState
-import com.emerchantpay.githubapptask.ui.profile.mapper.UiStateMapper
+import com.emerchantpay.githubapptask.ui.common.mapper.UiStateMapper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf

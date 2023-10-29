@@ -15,6 +15,8 @@ import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.inOrder
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.only
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @RunWith(MockitoJUnitRunner::class)
@@ -107,9 +109,88 @@ class UserRepositoryTest {
             awaitComplete()
         }
 
+        verify(userDao, only()).getOwnerUser()
+    }
+
+    @Test
+    fun `getFollowingUsers() with empty db and success network call should return success`() =
+        runTest {
+            // given
+            val response = listOf(generateUserResponse())
+            val usersDb = listOf(generateUserDb(isFollowing = true))
+
+            whenever(userDao.getFollowingUsers()).thenReturn(null)
+            whenever(gitHubApi.getFollowingUsers()).thenReturn(response)
+            doNothing().`when`(userDao).insertUsers(usersDb)
+
+            // when
+            tested.getFollowingUsers().test {
+                assertTrue(awaitItem() is Resource.Loading)
+                assertTrue(awaitItem() is Resource.Success)
+                awaitComplete()
+            }
+
+            inOrder(gitHubApi, userDao) {
+                verify(userDao).getFollowingUsers()
+                verify(gitHubApi).getFollowingUsers()
+                verify(userDao).insertUsers(usersDb)
+                verifyNoMoreInteractions()
+            }
+        }
+
+    @Test
+    fun `getFollowingUsers() with user in db should return success and not make network call`() =
+        runTest {
+            // given
+            val usersDb = listOf(generateUserDb(isFollowing = true))
+
+            whenever(userDao.getFollowingUsers()).thenReturn(usersDb)
+
+            // when
+            tested.getFollowingUsers().test {
+                assertTrue(awaitItem() is Resource.Loading)
+                assertTrue(awaitItem() is Resource.Success)
+                awaitComplete()
+            }
+
+            inOrder(userDao) {
+                verify(userDao).getFollowingUsers()
+                verifyNoMoreInteractions()
+            }
+        }
+
+    @Test
+    fun `getFollowingUsers() with empty db and network exception should return error`() = runTest {
+        // given
+        whenever(userDao.getFollowingUsers()).thenReturn(null)
+        whenever(gitHubApi.getFollowingUsers()).thenAnswer { throw Exception() }
+
+        // when
+        tested.getFollowingUsers().test {
+            assertTrue(awaitItem() is Resource.Loading)
+            assertTrue(awaitItem() is Resource.Error)
+            awaitComplete()
+        }
+
         inOrder(gitHubApi, userDao) {
-            verify(userDao).getOwnerUser()
+            verify(userDao).getFollowingUsers()
+            verify(gitHubApi).getFollowingUsers()
             verifyNoMoreInteractions()
         }
+    }
+
+    @Test
+    fun `getFollowingUsers() with user in db and db exception should return error`() = runTest {
+        // given
+        whenever(userDao.getFollowingUsers()).thenAnswer { throw Exception() }
+
+        // when
+        tested.getFollowingUsers().test {
+            assertTrue(awaitItem() is Resource.Loading)
+            assertTrue(awaitItem() is Resource.Error)
+            awaitComplete()
+        }
+
+        verify(userDao, only()).getFollowingUsers()
     }
 }

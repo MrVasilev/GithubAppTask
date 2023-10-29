@@ -1,4 +1,4 @@
-package com.emerchantpay.githubapptask.ui.profile
+package com.emerchantpay.githubapptask.ui.user.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import com.emerchantpay.githubapptask.domain.model.Repository
 import com.emerchantpay.githubapptask.domain.model.User
 import com.emerchantpay.githubapptask.domain.usecase.GetUserUseCase
 import com.emerchantpay.githubapptask.ui.common.UIState
-import com.emerchantpay.githubapptask.ui.profile.mapper.UiStateMapper
+import com.emerchantpay.githubapptask.ui.common.mapper.UiStateMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch

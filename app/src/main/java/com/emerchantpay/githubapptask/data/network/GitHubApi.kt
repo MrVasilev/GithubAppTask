@@ -14,4 +14,7 @@ interface GitHubApi {
 
     @GET("user/starred")
     suspend fun getUserStarredRepos(): List<RepositoryResponse>
+
+    @GET("user/following")
+    suspend fun getFollowingUsers(): List<UserResponse>
 }

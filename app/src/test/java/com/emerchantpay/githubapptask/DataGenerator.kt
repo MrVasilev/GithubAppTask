@@ -33,14 +33,21 @@ fun generateUserResponseWithNulls(): UserResponse = UserResponse(
     following = null
 )
 
-fun generateUserDb(isOwner: Boolean = false): UserEntity = UserEntity(
-    id = ID,
+fun generateUserDb(
+    id: Long = ID,
+    isOwner: Boolean = false,
+    isFollowing: Boolean = false,
+    isFollower: Boolean = false,
+): UserEntity = UserEntity(
+    id = id,
     login = LOGIN,
     name = NAME,
     avatarUrl = AVATAR_URL,
     followers = FOLLOWERS,
     following = FOLLOWERS,
-    isOwner = isOwner
+    isOwner = isOwner,
+    isFollowing = isFollowing,
+    isFollower = isFollower
 )
 
 fun generateUserDbEmpty(): UserEntity = UserEntity(

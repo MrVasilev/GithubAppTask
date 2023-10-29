@@ -27,4 +27,10 @@ data class UserEntity(
 
     @ColumnInfo(name = "is_owner")
     val isOwner: Boolean = false,
+
+    @ColumnInfo(name = "is_following")
+    val isFollowing: Boolean = false,
+
+    @ColumnInfo(name = "is_follower")
+    val isFollower: Boolean = false,
 )

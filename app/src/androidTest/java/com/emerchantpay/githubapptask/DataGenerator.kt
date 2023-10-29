@@ -11,14 +11,21 @@ private const val FOLLOWERS = 10
 private const val REPO_ID = 456L
 private const val REPO_URL = "https://REPO_URL"
 
-fun generateUserDb(isOwner: Boolean = false): UserEntity = UserEntity(
-    id = ID,
+fun generateUserDb(
+    id: Long = ID,
+    isOwner: Boolean = false,
+    isFollowing: Boolean = false,
+    isFollower: Boolean = false,
+): UserEntity = UserEntity(
+    id = id,
     login = LOGIN,
     name = NAME,
     avatarUrl = AVATAR_URL,
     followers = FOLLOWERS,
     following = FOLLOWERS,
-    isOwner = isOwner
+    isOwner = isOwner,
+    isFollowing = isFollowing,
+    isFollower = isFollower
 )
 
 fun generateRepositoryDb(id: Long = REPO_ID, isStarred: Boolean = false): RepositoryEntity =

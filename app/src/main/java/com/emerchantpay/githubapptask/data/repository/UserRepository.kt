@@ -32,11 +32,34 @@ class UserRepository @Inject constructor(
         emit(Resource.Error(error.message ?: UNKNOWN_ERROR_MESSAGE))
     }.flowOn(Dispatchers.IO)
 
+    suspend fun getFollowingUsers(): Flow<Resource<List<User>>> = flow {
+        emit(Resource.Loading)
+
+        val followingUsers = userDao.getFollowingUsers().run {
+            if (isNullOrEmpty()) {
+                fetchFollowingUsersDataRemote()
+            } else {
+                map { it.mapToDomainModel() }
+            }
+        }
+
+        emit(Resource.Success(followingUsers))
+    }.catch { error ->
+        emit(Resource.Error(error.message ?: UNKNOWN_ERROR_MESSAGE))
+    }.flowOn(Dispatchers.IO)
+
     private suspend fun fetchUserDataRemoteAndInsertInDb(): User = fetchRemoteDataAndInsertInDb(
         fetchRemoteData = { gitHubApi.getUser().run { listOf(this) } },
         mapToDbModel = { it.mapToDbModel(isOwner = true) },
         insertDbData = { userDao.insertUsers(it) },
         mapToDomainModel = { it.mapToDomainModel() }
     ).first()
+
+    private suspend fun fetchFollowingUsersDataRemote(): List<User> = fetchRemoteDataAndInsertInDb(
+        fetchRemoteData = { gitHubApi.getFollowingUsers() },
+        mapToDbModel = { it.mapToDbModel(isFollowing = true) },
+        insertDbData = { userDao.insertUsers(it) },
+        mapToDomainModel = { it.mapToDomainModel() }
+    )
 
 }
