@@ -32,7 +32,7 @@ class UserSearchFragment : Fragment() {
     private val userSearchAdapter = UserSearchAdapter()
 
     private val userType: UserType by lazy {
-        arguments?.getSerializable(USER_TYPE_PARAM) as? UserType
+        arguments?.getParcelable(USER_TYPE_PARAM) as? UserType
             ?: throw IllegalArgumentException("UserType Argument not found! Use newInstance(userType) function!")
     }
 

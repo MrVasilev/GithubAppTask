@@ -49,7 +49,7 @@ class UserSearchViewModelTest {
             val response = Resource.Success(followingUsers)
             val uiState = UIState.Success(followingUsers)
             val getUsersUseCase = GetFollowingUsersUseCase(userRepository)
-            val userType = UserType.FOLLOWING
+            val userType = UserType.Following
 
             whenever(useCaseFactory.getUserUseCaseByType(userType)).thenReturn(getUsersUseCase)
             whenever(getUsersUseCase.invoke()).thenReturn(flowOf(response))
@@ -73,7 +73,7 @@ class UserSearchViewModelTest {
             val response = Resource.Error(Constants.UNKNOWN_ERROR_MESSAGE)
             val uiState = UIState.Error(Constants.UNKNOWN_ERROR_MESSAGE)
             val getUsersUseCase = GetFollowingUsersUseCase(userRepository)
-            val userType = UserType.FOLLOWING
+            val userType = UserType.Following
 
             whenever(useCaseFactory.getUserUseCaseByType(userType)).thenReturn(getUsersUseCase)
             whenever(getUsersUseCase.invoke()).thenReturn(flowOf(response))
@@ -97,7 +97,7 @@ class UserSearchViewModelTest {
             val response = Resource.Loading
             val uiState = UIState.Loading
             val getUsersUseCase = GetFollowingUsersUseCase(userRepository)
-            val userType = UserType.FOLLOWING
+            val userType = UserType.Following
 
             whenever(useCaseFactory.getUserUseCaseByType(userType)).thenReturn(getUsersUseCase)
             whenever(getUsersUseCase.invoke()).thenReturn(flowOf(response))
@@ -122,7 +122,7 @@ class UserSearchViewModelTest {
             val response = Resource.Success(followingUsers)
             val uiState = UIState.Success(followingUsers)
             val getUsersUseCase = GetFollowerUsersUseCase(userRepository)
-            val userType = UserType.FOLLOWER
+            val userType = UserType.Follower
 
             whenever(useCaseFactory.getUserUseCaseByType(userType)).thenReturn(getUsersUseCase)
             whenever(getUsersUseCase.invoke()).thenReturn(flowOf(response))
@@ -146,7 +146,7 @@ class UserSearchViewModelTest {
             val response = Resource.Error(Constants.UNKNOWN_ERROR_MESSAGE)
             val uiState = UIState.Error(Constants.UNKNOWN_ERROR_MESSAGE)
             val getUsersUseCase = GetFollowerUsersUseCase(userRepository)
-            val userType = UserType.FOLLOWER
+            val userType = UserType.Follower
 
             whenever(useCaseFactory.getUserUseCaseByType(userType)).thenReturn(getUsersUseCase)
             whenever(getUsersUseCase.invoke()).thenReturn(flowOf(response))
@@ -170,7 +170,7 @@ class UserSearchViewModelTest {
             val response = Resource.Loading
             val uiState = UIState.Loading
             val getUsersUseCase = GetFollowerUsersUseCase(userRepository)
-            val userType = UserType.FOLLOWER
+            val userType = UserType.Follower
 
             whenever(useCaseFactory.getUserUseCaseByType(userType)).thenReturn(getUsersUseCase)
             whenever(getUsersUseCase.invoke()).thenReturn(flowOf(response))

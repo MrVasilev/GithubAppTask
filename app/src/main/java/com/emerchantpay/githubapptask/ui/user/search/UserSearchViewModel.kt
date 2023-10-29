@@ -26,17 +26,16 @@ class UserSearchViewModel @Inject constructor(
     private lateinit var getUsersUseCase: BaseGetUsersUseCase
 
     fun init(userType: UserType) {
-        initUseCase(userType)
-        getAllUsersByType()
+        getAllUsersByType(userType)
     }
 
-    private fun initUseCase(userType: UserType) {
+    private fun getAllUsersByType(userType: UserType) {
         getUsersUseCase = useCaseFactory.getUserUseCaseByType(userType)
-    }
+        val user = if (userType is UserType.RepoContributions) userType.user else ""
+        val repo = if (userType is UserType.RepoContributions) userType.repo else ""
 
-    private fun getAllUsersByType() {
         viewModelScope.launch {
-            getUsersUseCase.invoke().collect { usersResponse ->
+            getUsersUseCase.invoke(user, repo).collect { usersResponse ->
                 _usersUiState.postValue(uiStateMapper.mapToUiState(usersResponse))
             }
         }

@@ -11,6 +11,6 @@ class GetFollowingUsersUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) : BaseGetUsersUseCase {
 
-    override suspend fun invoke(): Flow<Resource<List<User>>> = userRepository.getFollowingUsers()
+    override suspend fun invoke(user: String, repo: String): Flow<Resource<List<User>>> = userRepository.getFollowingUsers()
 
 }
