@@ -18,6 +18,9 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE user_id = :id LIMIT 1")
     fun getUserById(id: Long): UserEntity?
 
+    @Query("SELECT * FROM users WHERE login = :name LIMIT 1")
+    fun getUserByName(name: String): UserEntity?
+
     @Query("SELECT * FROM users WHERE is_following = 1")
     fun getFollowingUsers(): List<UserEntity>
 

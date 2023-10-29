@@ -21,5 +21,5 @@ data class UserResponse(
     val followers: Int? = null,
 
     @Json(name = "following")
-    val following: Int? = null
+    val following: Int? = null,
 )

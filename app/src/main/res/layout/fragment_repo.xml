@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_16dp"
+        tools:context=".ui.repo.RepoFragment">
+
+        <TextView
+            android:id="@+id/tv_repo_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Repository Name" />
+
+        <ImageView
+            android:id="@+id/iv_repo_owner_photo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/padding_8dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_repo_name" />
+
+        <TextView
+            android:id="@+id/tv_repo_owner_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_repo_owner_photo"
+            tools:text="Repo Owner Name" />
+
+        <ImageView
+            android:id="@+id/iv_repo_contributors_photo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="@dimen/padding_8dp"
+            android:src="@drawable/ic_contributors"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/tv_repo_name" />
+
+        <TextView
+            android:id="@+id/repo_contributors_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/contributors_number_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/iv_repo_contributors_photo"
+            tools:text="Repo Contrib Name" />
+
+        <ProgressBar
+            android:id="@+id/pb_Loading"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -9,7 +9,7 @@ import com.emerchantpay.githubapptask.data.db.model.UserEntity
 
 @Database(
     entities = [UserEntity::class, RepositoryEntity::class],
-    version = 2
+    version = 3
 )
 abstract class AppDatabase : RoomDatabase() {
 

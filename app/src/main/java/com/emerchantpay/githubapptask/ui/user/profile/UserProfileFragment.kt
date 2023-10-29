@@ -18,6 +18,7 @@ import com.emerchantpay.githubapptask.domain.model.Repository
 import com.emerchantpay.githubapptask.domain.model.User
 import com.emerchantpay.githubapptask.domain.model.UserType
 import com.emerchantpay.githubapptask.ui.common.UIState
+import com.emerchantpay.githubapptask.ui.repo.RepoFragment
 import com.emerchantpay.githubapptask.ui.user.profile.adapter.RepositoryItemAdapter
 import com.emerchantpay.githubapptask.ui.user.search.UserSearchFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +31,12 @@ class UserProfileFragment : Fragment() {
 
     private val viewModel: UserProfileViewModel by viewModels()
 
-    private val repositoryItemsAdapter = RepositoryItemAdapter()
+    private val repositoryItemsAdapter = RepositoryItemAdapter(onClickListener = object :
+        RepositoryItemAdapter.RepositoryItemClickListener {
+        override fun onRepoItemClicked(repository: Repository) {
+            showRepoDetailsScreen(repository.ownerLogin, repository.id)
+        }
+    })
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +69,14 @@ class UserProfileFragment : Fragment() {
         requireActivity().supportFragmentManager
             .beginTransaction()
             .replace(R.id.container, UserSearchFragment.newInstance(userType))
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun showRepoDetailsScreen(ownerName: String, repoId: Long) {
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, RepoFragment.newInstance(ownerName, repoId))
             .addToBackStack(null)
             .commit()
     }

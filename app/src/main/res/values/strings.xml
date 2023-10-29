@@ -5,4 +5,5 @@
     <string name="followers_temp_text">Followers: %s</string>
     <string name="followings_temp_text">Followings: %s</string>
     <string name="no_users_found_message">No Users Found</string>
+    <string name="contributors_number_text">Contributors: %s</string>
 </resources>

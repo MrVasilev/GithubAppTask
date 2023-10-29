@@ -40,6 +40,7 @@ fun RepositoryResponse.mapToDbModel(isStarred: Boolean = false): RepositoryEntit
         name = name.orEmpty(),
         url = url.orEmpty(),
         ownerId = owner.id,
+        ownerLogin = owner.login.orEmpty(),
         isStarred = isStarred
     )
 
@@ -48,5 +49,6 @@ fun RepositoryEntity.mapToDomainModel(): Repository = Repository(
     name = name,
     url = url,
     ownerId = ownerId,
+    ownerLogin = ownerLogin,
     isStarred = isStarred
 )

@@ -54,6 +54,16 @@ class RepoRepository @Inject constructor(
         emit(Resource.Error(error.message ?: Constants.UNKNOWN_ERROR_MESSAGE))
     }.flowOn(Dispatchers.IO)
 
+    suspend fun getRepoById(repoId: Long): Flow<Resource<Repository>> = flow {
+        emit(Resource.Loading)
+
+        val repo = repositoryDao.getRepoById(repoId)?.mapToDomainModel()
+
+        emit(Resource.Success(repo))
+    }.catch { error ->
+        emit(Resource.Error(error.message ?: Constants.UNKNOWN_ERROR_MESSAGE))
+    }.flowOn(Dispatchers.IO)
+
     private suspend fun fetchUserRepositoriesDataRemote(): List<Repository> =
         fetchRemoteDataAndInsertInDb(
             fetchRemoteData = { gitHubApi.getUserRepos() },
