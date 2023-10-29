@@ -75,6 +75,16 @@ class UserRepository @Inject constructor(
         emit(Resource.Error(error.message ?: UNKNOWN_ERROR_MESSAGE))
     }.flowOn(Dispatchers.IO)
 
+    suspend fun getRepoContributors(user: String, repo: String): Flow<Resource<List<User>>> = flow {
+        emit(Resource.Loading)
+
+        val repoContributors = fetchRepoContributorsDataRemote(user, repo)
+
+        emit(Resource.Success(repoContributors))
+    }.catch { error ->
+        emit(Resource.Error(error.message ?: UNKNOWN_ERROR_MESSAGE))
+    }.flowOn(Dispatchers.IO)
+
     private suspend fun fetchUserDataRemoteAndInsertInDb(): User = fetchRemoteDataAndInsertInDb(
         fetchRemoteData = { gitHubApi.getUser().run { listOf(this) } },
         mapToDbModel = { it.mapToDbModel(isOwner = true) },
@@ -103,5 +113,13 @@ class UserRepository @Inject constructor(
             insertDbData = { userDao.insertUsers(it) },
             mapToDomainModel = { it.mapToDomainModel() }
         ).first()
+
+    private suspend fun fetchRepoContributorsDataRemote(user: String, repo: String): List<User> =
+        fetchRemoteDataAndInsertInDb(
+            fetchRemoteData = { gitHubApi.getRepoContributors(user, repo) },
+            mapToDbModel = { it.mapToDbModel() },
+            insertDbData = { userDao.insertUsers(it) },
+            mapToDomainModel = { it.mapToDomainModel() }
+        )
 
 }

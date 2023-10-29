@@ -3,5 +3,6 @@
 plugins {
     alias(libs.plugins.androidGradlePlugin) apply false
     alias(libs.plugins.kotlinAndroidPlugin) apply false
+    alias(libs.plugins.kotlinParcelizePlugin) apply false
     alias(libs.plugins.hiltPlugin) apply false
 }

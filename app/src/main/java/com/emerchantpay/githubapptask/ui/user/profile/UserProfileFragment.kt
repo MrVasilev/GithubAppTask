@@ -34,7 +34,7 @@ class UserProfileFragment : Fragment() {
     private val repositoryItemsAdapter = RepositoryItemAdapter(onClickListener = object :
         RepositoryItemAdapter.RepositoryItemClickListener {
         override fun onRepoItemClicked(repository: Repository) {
-            showRepoDetailsScreen(repository.ownerLogin, repository.id)
+            showRepoDetailsScreen(repository)
         }
     })
 
@@ -54,8 +54,8 @@ class UserProfileFragment : Fragment() {
             adapter = repositoryItemsAdapter
         }
 
-        dataBinding.btnFollowings.setOnClickListener { showUsersSearchScreen(UserType.FOLLOWING) }
-        dataBinding.btnFollowers.setOnClickListener { showUsersSearchScreen(UserType.FOLLOWER) }
+        dataBinding.btnFollowings.setOnClickListener { showUsersSearchScreen(UserType.Following) }
+        dataBinding.btnFollowers.setOnClickListener { showUsersSearchScreen(UserType.Follower) }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -73,10 +73,10 @@ class UserProfileFragment : Fragment() {
             .commit()
     }
 
-    private fun showRepoDetailsScreen(ownerName: String, repoId: Long) {
+    private fun showRepoDetailsScreen(repo: Repository) {
         requireActivity().supportFragmentManager
             .beginTransaction()
-            .replace(R.id.container, RepoFragment.newInstance(ownerName, repoId))
+            .replace(R.id.container, RepoFragment.newInstance(repo.ownerLogin, repo.id, repo.name))
             .addToBackStack(null)
             .commit()
     }

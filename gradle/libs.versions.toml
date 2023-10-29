@@ -70,4 +70,5 @@ roomTest                = { module = "androidx.room:room-testing", version.ref =
 [plugins]
 androidGradlePlugin     = { id = "com.android.application", version.ref = "android_gradle_plugin_version" }
 kotlinAndroidPlugin     = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_android_plugin_version" }
+kotlinParcelizePlugin   = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin_android_plugin_version" }
 hiltPlugin              = { id = "com.google.dagger.hilt.android", version.ref = "hilt_version" }

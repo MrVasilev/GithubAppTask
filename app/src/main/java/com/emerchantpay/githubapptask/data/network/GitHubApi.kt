@@ -25,10 +25,7 @@ interface GitHubApi {
     @GET("user/followers")
     suspend fun getFollowerUsers(): List<UserResponse>
 
-    @GET("repos/{user}}/{repo}/contributors")
-    suspend fun getRepoById(@Path("repoId") repoId: Long): RepositoryResponse
-
-    @GET("repos/{user}}/{repo}/contributors")
+    @GET("repos/{user}/{repo}/contributors")
     suspend fun getRepoContributors(
         @Path("user") user: String,
         @Path("repo") repo: String,

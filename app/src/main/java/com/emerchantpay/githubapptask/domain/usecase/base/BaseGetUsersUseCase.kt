@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface BaseGetUsersUseCase {
 
-    suspend operator fun invoke(): Flow<Resource<List<User>>>
+    suspend operator fun invoke(user: String = "", repo: String = ""): Flow<Resource<List<User>>>
 
 }

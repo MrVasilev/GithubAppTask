@@ -40,9 +40,9 @@ class UseCaseFactoryTest(
         @JvmStatic
         @Parameterized.Parameters(name = "{index}: userType={0} -> useCase={1}")
         fun provideData(): Collection<Array<Any>> = listOf(
-            arrayOf(UserType.FOLLOWING, GetFollowingUsersUseCase::class.java),
-            arrayOf(UserType.FOLLOWER, GetFollowerUsersUseCase::class.java),
-            arrayOf(UserType.REPO_CONTRIBUTORS, GetRepoContributorsUseCase::class.java)
+            arrayOf(UserType.Following, GetFollowingUsersUseCase::class.java),
+            arrayOf(UserType.Follower, GetFollowerUsersUseCase::class.java),
+            arrayOf(UserType.RepoContributions("", ""), GetRepoContributorsUseCase::class.java)
         )
     }
 }

@@ -13,8 +13,8 @@ class UseCaseFactory @Inject constructor(private val userRepository: UserReposit
 
     fun getUserUseCaseByType(userType: UserType): BaseGetUsersUseCase =
         when (userType) {
-            UserType.FOLLOWING -> GetFollowingUsersUseCase(userRepository)
-            UserType.FOLLOWER -> GetFollowerUsersUseCase(userRepository)
-            UserType.REPO_CONTRIBUTORS -> GetRepoContributorsUseCase(userRepository)
+            is UserType.Following -> GetFollowingUsersUseCase(userRepository)
+            is UserType.Follower -> GetFollowerUsersUseCase(userRepository)
+            is UserType.RepoContributions -> GetRepoContributorsUseCase(userRepository)
         }
 }

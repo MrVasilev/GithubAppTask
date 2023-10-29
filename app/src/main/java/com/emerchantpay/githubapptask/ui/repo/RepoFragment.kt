@@ -16,7 +16,9 @@ import com.emerchantpay.githubapptask.R
 import com.emerchantpay.githubapptask.databinding.FragmentRepoBinding
 import com.emerchantpay.githubapptask.domain.model.Repository
 import com.emerchantpay.githubapptask.domain.model.User
+import com.emerchantpay.githubapptask.domain.model.UserType
 import com.emerchantpay.githubapptask.ui.common.UIState
+import com.emerchantpay.githubapptask.ui.user.search.UserSearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -29,12 +31,17 @@ class RepoFragment : Fragment() {
 
     private val ownerName: String by lazy {
         arguments?.getString(OWNER_REPO_NAME_PARAM)
-            ?: throw IllegalArgumentException("Repo ID not found! Use newInstance(ownerName, repoId) function!")
+            ?: throw IllegalArgumentException("Owner Name not found! Use newInstance(ownerName, repoId, repoName) function!")
+    }
+
+    private val repoName: String by lazy {
+        arguments?.getString(REPO_NAME_PARAM)
+            ?: throw IllegalArgumentException("Repo Name not found! Use newInstance(ownerName, repoId, repoName) function!")
     }
 
     private val repoId: Long by lazy {
         arguments?.getLong(REPO_ID_PARAM)
-            ?: throw IllegalArgumentException("Repo ID not found! Use newInstance(ownerName, repoId) function!")
+            ?: throw IllegalArgumentException("Repo ID not found! Use newInstance(ownerName, repoId, repoName) function!")
     }
 
     override fun onCreateView(
@@ -48,6 +55,8 @@ class RepoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        dataBinding.ivRepoContributorsPhoto.setOnClickListener { showRepoContributorsSearchScreen() }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -87,6 +96,17 @@ class RepoFragment : Fragment() {
         }
     }
 
+    private fun showRepoContributorsSearchScreen() {
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .replace(
+                R.id.container,
+                UserSearchFragment.newInstance(UserType.RepoContributions(ownerName, repoName))
+            )
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun loadRepoData(repo: Repository) {
         dataBinding.tvRepoName.text = repo.name
     }
@@ -108,11 +128,13 @@ class RepoFragment : Fragment() {
 
     companion object {
         private const val REPO_ID_PARAM = "REPO_ID"
+        private const val REPO_NAME_PARAM = "REPO_NAME"
         private const val OWNER_REPO_NAME_PARAM = "OWNER_REPO_NAME"
 
-        fun newInstance(ownerName: String, repoId: Long) = RepoFragment().apply {
+        fun newInstance(ownerName: String, repoId: Long, repoName: String) = RepoFragment().apply {
             arguments = bundleOf(
                 OWNER_REPO_NAME_PARAM to ownerName,
+                REPO_NAME_PARAM to repoName,
                 REPO_ID_PARAM to repoId
             )
         }

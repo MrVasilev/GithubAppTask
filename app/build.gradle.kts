@@ -2,6 +2,7 @@
 plugins {
     alias(libs.plugins.androidGradlePlugin)
     alias(libs.plugins.kotlinAndroidPlugin)
+    alias(libs.plugins.kotlinParcelizePlugin)
     kotlin("kapt")
     alias(libs.plugins.hiltPlugin)
 }
