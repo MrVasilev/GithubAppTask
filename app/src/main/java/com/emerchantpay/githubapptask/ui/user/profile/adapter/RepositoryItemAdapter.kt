@@ -1,4 +1,4 @@
-package com.emerchantpay.githubapptask.ui.profile.adapter
+package com.emerchantpay.githubapptask.ui.user.profile.adapter
 
 import android.view.LayoutInflater
 import android.view.View

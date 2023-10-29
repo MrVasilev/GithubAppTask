@@ -1,4 +1,4 @@
-package com.emerchantpay.githubapptask.ui.profile
+package com.emerchantpay.githubapptask.ui.user.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +17,8 @@ import com.emerchantpay.githubapptask.databinding.FragmentUserProfileBinding
 import com.emerchantpay.githubapptask.domain.model.Repository
 import com.emerchantpay.githubapptask.domain.model.User
 import com.emerchantpay.githubapptask.ui.common.UIState
-import com.emerchantpay.githubapptask.ui.profile.adapter.RepositoryItemAdapter
+import com.emerchantpay.githubapptask.ui.user.profile.adapter.RepositoryItemAdapter
+import com.emerchantpay.githubapptask.ui.user.search.UserSearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -46,6 +47,8 @@ class UserProfileFragment : Fragment() {
             adapter = repositoryItemsAdapter
         }
 
+        dataBinding.btnFollowings.setOnClickListener { showUserSearchScreen() }
+
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 handleUserUiState()
@@ -54,13 +57,21 @@ class UserProfileFragment : Fragment() {
         }
     }
 
+    private fun showUserSearchScreen() {
+        requireActivity().supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.container, UserSearchFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
+    }
+
     private fun handleUserUiState() {
         viewModel.userUiState.observe(viewLifecycleOwner) { uiState ->
             when (uiState) {
                 UIState.Loading -> showLoading()
                 is UIState.Success -> {
                     hideLoading()
-                    loadUserData(uiState)
+                    loadUserData(uiState.data)
                 }
 
                 is UIState.Error -> hideLoading()
@@ -74,7 +85,7 @@ class UserProfileFragment : Fragment() {
                 UIState.Loading -> showLoading()
                 is UIState.Success -> {
                     hideLoading()
-                    loadReposData(uiState)
+                    loadReposData(uiState.data)
                 }
 
                 is UIState.Error -> hideLoading()
@@ -82,8 +93,7 @@ class UserProfileFragment : Fragment() {
         }
     }
 
-    private fun loadUserData(uiState: UIState.Success<User>) {
-        val user = uiState.data
+    private fun loadUserData(user: User) {
         dataBinding.apply {
             ivProfilePhoto.load(user.avatarUrl)
             tvUserName.text = user.name
@@ -98,8 +108,8 @@ class UserProfileFragment : Fragment() {
         }
     }
 
-    private fun loadReposData(uiState: UIState.Success<List<Repository>>): Unit =
-        repositoryItemsAdapter.setRepositoryItems(uiState.data)
+    private fun loadReposData(repos: List<Repository>): Unit =
+        repositoryItemsAdapter.setRepositoryItems(repos)
 
     private fun showLoading() {
         dataBinding.pbLoading.visibility = View.VISIBLE

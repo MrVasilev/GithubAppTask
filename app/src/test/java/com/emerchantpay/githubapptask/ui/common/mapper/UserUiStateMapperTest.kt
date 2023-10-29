@@ -1,4 +1,4 @@
-package com.emerchantpay.githubapptask.ui.profile.mapper
+package com.emerchantpay.githubapptask.ui.common.mapper
 
 import com.emerchantpay.githubapptask.common.Constants.UNKNOWN_ERROR_MESSAGE
 import com.emerchantpay.githubapptask.data.common.Resource

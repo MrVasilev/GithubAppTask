@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.emerchantpay.githubapptask.R
 import com.emerchantpay.githubapptask.databinding.ActivityMainBinding
-import com.emerchantpay.githubapptask.ui.profile.UserProfileFragment
+import com.emerchantpay.githubapptask.ui.user.profile.UserProfileFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

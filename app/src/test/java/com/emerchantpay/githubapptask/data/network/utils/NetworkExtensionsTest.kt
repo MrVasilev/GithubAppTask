@@ -49,4 +49,32 @@ class NetworkExtensionsTest {
 
             assertEquals(expected, actual)
         }
+
+    @Test
+    fun `fetchRemoteDataAndInsertInDb() with following users api call should return response and insert data in db`() =
+        runTest {
+            // given
+            val userResponse = listOf(generateUserResponse())
+            val userDb = listOf(generateUserDb(isFollowing = true))
+            val expected = listOf(generateUser())
+
+            whenever(gitHubApi.getFollowingUsers()).thenReturn(userResponse)
+
+            // when
+            val actual = fetchRemoteDataAndInsertInDb(
+                fetchRemoteData = { gitHubApi.getFollowingUsers() },
+                mapToDbModel = { it.mapToDbModel(isFollowing = true) },
+                insertDbData = { userDao.insertUsers(it) },
+                mapToDomainModel = { it.mapToDomainModel() }
+            )
+
+            // then
+            inOrder(gitHubApi, userDao) {
+                verify(gitHubApi).getFollowingUsers()
+                verify(userDao).insertUsers(userDb)
+                verifyNoMoreInteractions()
+            }
+
+            assertEquals(expected, actual)
+        }
 }

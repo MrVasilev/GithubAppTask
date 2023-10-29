@@ -8,6 +8,7 @@ import com.emerchantpay.githubapptask.generateUserDb
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -76,5 +77,46 @@ class UserDaoTest {
 
         // then
         assertNull(actual)
+    }
+
+    @Test
+    fun getFollowingUsersShouldReturnFollowingUsers() {
+        // given
+        val expected = listOf(
+            generateUserDb(isFollowing = true),
+            generateUserDb(id = 456L, isFollowing = true)
+        )
+
+        // when
+        tested.insertUsers(expected)
+        val actual = tested.getFollowingUsers()
+
+        // then
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun getFollowingUsersNotAvailableInDbShouldReturnEmptyList() {
+        // given
+        val expected = listOf(
+            generateUserDb(),
+            generateUserDb(id = 456L)
+        )
+
+        // when
+        tested.insertUsers(expected)
+        val actual = tested.getFollowingUsers()
+
+        // then
+        assertTrue(actual.isEmpty())
+    }
+
+    @Test
+    fun getFollowingUsersWithEmptyDbShouldReturnEmptyList() {
+        // when
+        val actual = tested.getFollowingUsers()
+
+        // then
+        assertTrue(actual.isEmpty())
     }
 }

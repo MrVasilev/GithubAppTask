@@ -9,14 +9,20 @@ import com.emerchantpay.githubapptask.data.network.model.UserResponse
 import com.emerchantpay.githubapptask.domain.model.Repository
 import com.emerchantpay.githubapptask.domain.model.User
 
-fun UserResponse.mapToDbModel(isOwner: Boolean = false): UserEntity = UserEntity(
+fun UserResponse.mapToDbModel(
+    isOwner: Boolean = false,
+    isFollowing: Boolean = false,
+    isFollower: Boolean = false,
+): UserEntity = UserEntity(
     id = id,
     login = login.orEmpty(),
     name = name.orEmpty(),
     avatarUrl = avatarUrl.orEmpty(),
     followers = followers ?: 0,
     following = following ?: 0,
-    isOwner = isOwner
+    isOwner = isOwner,
+    isFollowing = isFollowing,
+    isFollower = isFollower
 )
 
 fun UserEntity.mapToDomainModel(): User = User(
