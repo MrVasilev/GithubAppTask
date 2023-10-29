@@ -48,6 +48,22 @@ class UserRepository @Inject constructor(
         emit(Resource.Error(error.message ?: UNKNOWN_ERROR_MESSAGE))
     }.flowOn(Dispatchers.IO)
 
+    suspend fun getFollowerUsers(): Flow<Resource<List<User>>> = flow {
+        emit(Resource.Loading)
+
+        val followerUsers = userDao.getFollowerUsers().run {
+            if (isNullOrEmpty()) {
+                fetchFollowerUsersDataRemote()
+            } else {
+                map { it.mapToDomainModel() }
+            }
+        }
+
+        emit(Resource.Success(followerUsers))
+    }.catch { error ->
+        emit(Resource.Error(error.message ?: UNKNOWN_ERROR_MESSAGE))
+    }.flowOn(Dispatchers.IO)
+
     private suspend fun fetchUserDataRemoteAndInsertInDb(): User = fetchRemoteDataAndInsertInDb(
         fetchRemoteData = { gitHubApi.getUser().run { listOf(this) } },
         mapToDbModel = { it.mapToDbModel(isOwner = true) },
@@ -58,6 +74,13 @@ class UserRepository @Inject constructor(
     private suspend fun fetchFollowingUsersDataRemote(): List<User> = fetchRemoteDataAndInsertInDb(
         fetchRemoteData = { gitHubApi.getFollowingUsers() },
         mapToDbModel = { it.mapToDbModel(isFollowing = true) },
+        insertDbData = { userDao.insertUsers(it) },
+        mapToDomainModel = { it.mapToDomainModel() }
+    )
+
+    private suspend fun fetchFollowerUsersDataRemote(): List<User> = fetchRemoteDataAndInsertInDb(
+        fetchRemoteData = { gitHubApi.getFollowerUsers() },
+        mapToDbModel = { it.mapToDbModel(isFollower = true) },
         insertDbData = { userDao.insertUsers(it) },
         mapToDomainModel = { it.mapToDomainModel() }
     )

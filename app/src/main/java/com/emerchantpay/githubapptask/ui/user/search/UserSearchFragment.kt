@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.emerchantpay.githubapptask.R
 import com.emerchantpay.githubapptask.databinding.FragmentUserSearchBinding
 import com.emerchantpay.githubapptask.domain.model.User
+import com.emerchantpay.githubapptask.domain.model.UserType
 import com.emerchantpay.githubapptask.ui.common.UIState
 import com.emerchantpay.githubapptask.ui.user.search.adapter.UserSearchAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +30,11 @@ class UserSearchFragment : Fragment() {
     private val viewModel: UserSearchViewModel by viewModels()
 
     private val userSearchAdapter = UserSearchAdapter()
+
+    private val userType: UserType by lazy {
+        arguments?.getSerializable(USER_TYPE_PARAM) as? UserType
+            ?: throw IllegalArgumentException("UserType Argument not found! Use newInstance(userType) function!")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +71,7 @@ class UserSearchFragment : Fragment() {
             }
         }
 
-        viewModel.init()
+        viewModel.init(userType)
     }
 
     private fun handleUsersData() {
@@ -73,7 +80,7 @@ class UserSearchFragment : Fragment() {
                 UIState.Loading -> showLoading()
                 is UIState.Success -> {
                     hideLoading()
-                    loadUsersData(uiState.data)
+                    handleLoadUsersData(uiState.data)
                 }
 
                 is UIState.Error -> hideLoading()
@@ -81,7 +88,8 @@ class UserSearchFragment : Fragment() {
         }
     }
 
-    private fun loadUsersData(users: List<User>) {
+    private fun handleLoadUsersData(users: List<User>) {
+        dataBinding.tvNoData.visibility = if (users.isEmpty()) View.VISIBLE else View.GONE
         userSearchAdapter.setUserItems(users)
     }
 
@@ -94,7 +102,11 @@ class UserSearchFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = UserSearchFragment()
+        private const val USER_TYPE_PARAM = "USER_TYPE"
+
+        fun newInstance(userType: UserType) = UserSearchFragment().apply {
+            arguments = bundleOf(USER_TYPE_PARAM to userType)
+        }
     }
 
 }

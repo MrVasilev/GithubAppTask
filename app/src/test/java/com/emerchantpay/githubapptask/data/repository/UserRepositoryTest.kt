@@ -193,4 +193,86 @@ class UserRepositoryTest {
 
         verify(userDao, only()).getFollowingUsers()
     }
+
+    @Test
+    fun `getFollowerUsers() with empty db and success network call should return success`() =
+        runTest {
+            // given
+            val response = listOf(generateUserResponse())
+            val usersDb = listOf(generateUserDb(isFollower = true))
+
+            whenever(userDao.getFollowerUsers()).thenReturn(null)
+            whenever(gitHubApi.getFollowerUsers()).thenReturn(response)
+            doNothing().`when`(userDao).insertUsers(usersDb)
+
+            // when
+            tested.getFollowerUsers().test {
+                assertTrue(awaitItem() is Resource.Loading)
+                assertTrue(awaitItem() is Resource.Success)
+                awaitComplete()
+            }
+
+            inOrder(gitHubApi, userDao) {
+                verify(userDao).getFollowerUsers()
+                verify(gitHubApi).getFollowerUsers()
+                verify(userDao).insertUsers(usersDb)
+                verifyNoMoreInteractions()
+            }
+        }
+
+    @Test
+    fun `getFollowerUsers() with user in db should return success and not make network call`() =
+        runTest {
+            // given
+            val usersDb = listOf(generateUserDb(isFollower = true))
+
+            whenever(userDao.getFollowerUsers()).thenReturn(usersDb)
+
+            // when
+            tested.getFollowerUsers().test {
+                assertTrue(awaitItem() is Resource.Loading)
+                assertTrue(awaitItem() is Resource.Success)
+                awaitComplete()
+            }
+
+            inOrder(userDao) {
+                verify(userDao).getFollowerUsers()
+                verifyNoMoreInteractions()
+            }
+        }
+
+    @Test
+    fun `getFollowerUsers() with empty db and network exception should return error`() = runTest {
+        // given
+        whenever(userDao.getFollowerUsers()).thenReturn(null)
+        whenever(gitHubApi.getFollowerUsers()).thenAnswer { throw Exception() }
+
+        // when
+        tested.getFollowerUsers().test {
+            assertTrue(awaitItem() is Resource.Loading)
+            assertTrue(awaitItem() is Resource.Error)
+            awaitComplete()
+        }
+
+        inOrder(gitHubApi, userDao) {
+            verify(userDao).getFollowerUsers()
+            verify(gitHubApi).getFollowerUsers()
+            verifyNoMoreInteractions()
+        }
+    }
+
+    @Test
+    fun `getFollowerUsers() with user in db and db exception should return error`() = runTest {
+        // given
+        whenever(userDao.getFollowerUsers()).thenAnswer { throw Exception() }
+
+        // when
+        tested.getFollowerUsers().test {
+            assertTrue(awaitItem() is Resource.Loading)
+            assertTrue(awaitItem() is Resource.Error)
+            awaitComplete()
+        }
+
+        verify(userDao, only()).getFollowerUsers()
+    }
 }

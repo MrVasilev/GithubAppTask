@@ -16,6 +16,7 @@ import com.emerchantpay.githubapptask.R
 import com.emerchantpay.githubapptask.databinding.FragmentUserProfileBinding
 import com.emerchantpay.githubapptask.domain.model.Repository
 import com.emerchantpay.githubapptask.domain.model.User
+import com.emerchantpay.githubapptask.domain.model.UserType
 import com.emerchantpay.githubapptask.ui.common.UIState
 import com.emerchantpay.githubapptask.ui.user.profile.adapter.RepositoryItemAdapter
 import com.emerchantpay.githubapptask.ui.user.search.UserSearchFragment
@@ -47,7 +48,8 @@ class UserProfileFragment : Fragment() {
             adapter = repositoryItemsAdapter
         }
 
-        dataBinding.btnFollowings.setOnClickListener { showUserSearchScreen() }
+        dataBinding.btnFollowings.setOnClickListener { showUsersSearchScreen(UserType.FOLLOWING) }
+        dataBinding.btnFollowers.setOnClickListener { showUsersSearchScreen(UserType.FOLLOWER) }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -57,10 +59,10 @@ class UserProfileFragment : Fragment() {
         }
     }
 
-    private fun showUserSearchScreen() {
+    private fun showUsersSearchScreen(userType: UserType) {
         requireActivity().supportFragmentManager
             .beginTransaction()
-            .replace(R.id.container, UserSearchFragment.newInstance())
+            .replace(R.id.container, UserSearchFragment.newInstance(userType))
             .addToBackStack(null)
             .commit()
     }
