@@ -9,13 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.emerchantpay.githubapptask.databinding.ItemRepositoryBinding
 import com.emerchantpay.githubapptask.domain.model.Repository
 
-class RepositoryItemAdapter : RecyclerView.Adapter<RepositoryItemAdapter.ViewHolder>() {
+class RepositoryItemAdapter(
+    private val onClickListener: RepositoryItemClickListener,
+) : RecyclerView.Adapter<RepositoryItemAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
         ViewHolder(
             ItemRepositoryBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
-            )
+            ),
+            onClickListener
         )
 
     override fun getItemCount(): Int = repositoryListDiffer.currentList.size
@@ -38,7 +41,10 @@ class RepositoryItemAdapter : RecyclerView.Adapter<RepositoryItemAdapter.ViewHol
             oldItem == newItem
     }
 
-    class ViewHolder(private val binding: ItemRepositoryBinding) :
+    class ViewHolder(
+        private val binding: ItemRepositoryBinding,
+        private val onClickListener: RepositoryItemClickListener,
+    ) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(repository: Repository) {
@@ -46,7 +52,13 @@ class RepositoryItemAdapter : RecyclerView.Adapter<RepositoryItemAdapter.ViewHol
                 tvRepoName.text = repository.name
                 tvRepoUrl.text = repository.url
                 ivStarred.visibility = if (repository.isStarred) View.VISIBLE else View.GONE
+
+                root.setOnClickListener { onClickListener.onRepoItemClicked(repository) }
             }
         }
+    }
+
+    interface RepositoryItemClickListener {
+        fun onRepoItemClicked(repository: Repository)
     }
 }

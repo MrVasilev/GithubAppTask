@@ -34,5 +34,6 @@ fun generateRepositoryDb(id: Long = REPO_ID, isStarred: Boolean = false): Reposi
         name = NAME,
         url = REPO_URL,
         ownerId = ID,
+        ownerLogin = LOGIN,
         isStarred = isStarred
     )

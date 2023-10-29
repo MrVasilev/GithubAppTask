@@ -31,7 +31,7 @@ class GetUserUseCaseTest {
     @Test
     fun `invoke() loading should return loading response`() = runTest {
         // given
-        whenever(userRepository.getUser()).thenReturn(flowOf(Resource.Loading))
+        whenever(userRepository.getOwnerUser()).thenReturn(flowOf(Resource.Loading))
 
         // when
         tested.invoke().test {
@@ -39,7 +39,7 @@ class GetUserUseCaseTest {
             awaitComplete()
         }
 
-        verify(userRepository, only()).getUser()
+        verify(userRepository, only()).getOwnerUser()
     }
 
     @Test
@@ -47,7 +47,7 @@ class GetUserUseCaseTest {
         // given
         val user = generateUser()
 
-        whenever(userRepository.getUser()).thenReturn(flowOf(Resource.Success(user)))
+        whenever(userRepository.getOwnerUser()).thenReturn(flowOf(Resource.Success(user)))
 
         // when
         tested.invoke().test {
@@ -55,13 +55,13 @@ class GetUserUseCaseTest {
             awaitComplete()
         }
 
-        verify(userRepository, only()).getUser()
+        verify(userRepository, only()).getOwnerUser()
     }
 
     @Test
     fun `invoke() error should return error response`() = runTest {
         // given
-        whenever(userRepository.getUser()).thenReturn(flowOf(Resource.Error(ERROR_MESSAGE)))
+        whenever(userRepository.getOwnerUser()).thenReturn(flowOf(Resource.Error(ERROR_MESSAGE)))
 
         // when
         tested.invoke().test {
@@ -69,7 +69,7 @@ class GetUserUseCaseTest {
             awaitComplete()
         }
 
-        verify(userRepository, only()).getUser()
+        verify(userRepository, only()).getOwnerUser()
     }
 
     companion object {

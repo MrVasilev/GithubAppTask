@@ -22,10 +22,21 @@ class UserRepository @Inject constructor(
     private val userDao: UserDao,
 ) {
 
-    suspend fun getUser(): Flow<Resource<User>> = flow {
+    suspend fun getOwnerUser(): Flow<Resource<User>> = flow {
         emit(Resource.Loading)
 
         val user = userDao.getOwnerUser()?.mapToDomainModel() ?: fetchUserDataRemoteAndInsertInDb()
+
+        emit(Resource.Success(user))
+    }.catch { error ->
+        emit(Resource.Error(error.message ?: UNKNOWN_ERROR_MESSAGE))
+    }.flowOn(Dispatchers.IO)
+
+    suspend fun getUserByName(name: String): Flow<Resource<User>> = flow {
+        emit(Resource.Loading)
+
+        val user = userDao.getUserByName(name)?.mapToDomainModel()
+            ?: fetchUserDataByNameRemoteAndInsertInDb(name)
 
         emit(Resource.Success(user))
     }.catch { error ->
@@ -84,5 +95,13 @@ class UserRepository @Inject constructor(
         insertDbData = { userDao.insertUsers(it) },
         mapToDomainModel = { it.mapToDomainModel() }
     )
+
+    private suspend fun fetchUserDataByNameRemoteAndInsertInDb(name: String): User =
+        fetchRemoteDataAndInsertInDb(
+            fetchRemoteData = { gitHubApi.getUserByName(name).run { listOf(this) } },
+            mapToDbModel = { it.mapToDbModel() },
+            insertDbData = { userDao.insertUsers(it) },
+            mapToDomainModel = { it.mapToDomainModel() }
+        ).first()
 
 }

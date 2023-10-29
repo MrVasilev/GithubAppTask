@@ -97,6 +97,7 @@ fun generateRepositoryDb(isStarred: Boolean = false): RepositoryEntity = Reposit
     name = NAME,
     url = REPO_URL,
     ownerId = ID,
+    ownerLogin = LOGIN,
     isStarred = isStarred
 )
 
@@ -105,6 +106,7 @@ fun generateRepositoryDbEmpty(): RepositoryEntity = RepositoryEntity(
     name = "",
     url = "",
     ownerId = ID,
+    ownerLogin = "",
     isStarred = false
 )
 
@@ -113,6 +115,7 @@ fun generateRepository(isStarred: Boolean = false): Repository = Repository(
     name = NAME,
     url = REPO_URL,
     ownerId = ID,
+    ownerLogin = LOGIN,
     isStarred = isStarred
 )
 
@@ -121,5 +124,6 @@ fun generateRepositoryEmpty(): Repository = Repository(
     name = "",
     url = "",
     ownerId = ID,
+    ownerLogin = "",
     isStarred = false
 )

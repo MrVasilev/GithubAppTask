@@ -43,7 +43,7 @@ class UserRepositoryTest {
         doNothing().`when`(userDao).insertUsers(listOf(userDb))
 
         // when
-        tested.getUser().test {
+        tested.getOwnerUser().test {
             assertTrue(awaitItem() is Resource.Loading)
             assertTrue(awaitItem() is Resource.Success)
             awaitComplete()
@@ -65,7 +65,7 @@ class UserRepositoryTest {
         whenever(userDao.getOwnerUser()).thenReturn(userDb)
 
         // when
-        tested.getUser().test {
+        tested.getOwnerUser().test {
             assertTrue(awaitItem() is Resource.Loading)
             assertTrue(awaitItem() is Resource.Success)
             awaitComplete()
@@ -84,7 +84,7 @@ class UserRepositoryTest {
         whenever(gitHubApi.getUser()).thenAnswer { throw Exception() }
 
         // when
-        tested.getUser().test {
+        tested.getOwnerUser().test {
             assertTrue(awaitItem() is Resource.Loading)
             assertTrue(awaitItem() is Resource.Error)
             awaitComplete()
@@ -103,7 +103,7 @@ class UserRepositoryTest {
         whenever(userDao.getOwnerUser()).thenAnswer { throw Exception() }
 
         // when
-        tested.getUser().test {
+        tested.getOwnerUser().test {
             assertTrue(awaitItem() is Resource.Loading)
             assertTrue(awaitItem() is Resource.Error)
             awaitComplete()

@@ -19,6 +19,9 @@ data class RepositoryEntity(
     @ColumnInfo(name = "owner_id")
     val ownerId: Long,
 
+    @ColumnInfo(name = "owner_login")
+    val ownerLogin: String,
+
     @ColumnInfo(name = "is_starred")
-    val isStarred: Boolean
+    val isStarred: Boolean,
 )
