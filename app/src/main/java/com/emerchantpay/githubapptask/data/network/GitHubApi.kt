@@ -17,4 +17,7 @@ interface GitHubApi {
 
     @GET("user/following")
     suspend fun getFollowingUsers(): List<UserResponse>
+
+    @GET("user/followers")
+    suspend fun getFollowerUsers(): List<UserResponse>
 }
